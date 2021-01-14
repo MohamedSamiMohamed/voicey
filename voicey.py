@@ -1,4 +1,3 @@
-#from pydub import AudioSegment
 import numpy as np
 from scipy.io import wavfile
 import matplotlib.pyplot as plt
@@ -44,27 +43,22 @@ read_signal("output2.wav")
 read_signal("output3.wav")
 read_signal("output4.wav")
 min_shape=min(shape)
-print(shape)
 for i in range(0,3):
     x[i]=x[i][0:min_shape]
     t[i]=t[i][0:min_shape]
 
-freq_1 = fftpack.fft(x[0])
-freq = fftpack.fftfreq(min_shape) * samplerate_list[0]
-#wavfile.write("example.wav",samplerate_list[0],x[0])
-plt.plot(t[0],x[0])
+
+
+
+plt.plot(t[0],x[2])
 plt.show()
-# plt.plot(t[0],x[1])
-# plt.show()
-# plt.plot(t[0],x[2])
-# plt.show()
-modulating_signal.append(np.cos( 5000 * t[0]))
-modulating_signal.append(np.cos( 80000 * t[0]))
-modulating_signal.append(np.sin( 80000* t[0]))
+modulating_signal.append(np.cos( (2*np.pi)*5000 * t[0]))
+modulating_signal.append(np.cos( (2*np.pi)*15000 * t[0]))
+modulating_signal.append(np.sin( (2*np.pi)*15000 * t[0]))
 for i in range(0,3):
     modulated_signal.append(np.multiply(x[i],modulating_signal[i]))
-s_t=modulated_signal[0]+modulated_signal[1]+modulated_signal[2]
 
+s_t=modulated_signal[0]+modulated_signal[1]+modulated_signal[2]
 freq = fftpack.fftfreq(min_shape) * samplerate_list[0]
 #freq = fftpack.fftfreq(min_shape)
 for i in range(0,3):
@@ -73,17 +67,52 @@ freq_signals.append(fftpack.fft(s_t))
 s_t_freq=fftpack.fft(s_t)
 plt.plot(freq, s_t_freq.real)
 plt.show()
-print((1700/2*np.pi))
-filtered=butter_bandpass_filter(s_t,int(5000/2*np.pi),samplerate_list[0],3)
-filtered_freq=fftpack.fft(filtered)
-plt.plot(freq, filtered_freq.real)
+
+x1=butter_bandpass_filter(s_t,7000,samplerate_list[0],12)
+
+x23=s_t-x1
+x2=x23*modulating_signal[1]
+x3=x23*modulating_signal[2]
+x1=x1*modulating_signal[0]
+
+x2=butter_bandpass_filter(x2,7000,samplerate_list[0],12)
+x3=butter_bandpass_filter(x3,7000,samplerate_list[0],12)
+x1=butter_bandpass_filter(x1,5000,samplerate_list[0],12)
+x2=2*x2
+x3=2*x3
+x1=2*x1
+
+x1=np.array(x1,dtype=np.int16)
+x2=np.array(x2,dtype=np.int16)
+x3=np.array(x3,dtype=np.int16)
+
+plt.plot(t[0],x[0])
 plt.show()
-x_t=filtered*modulating_signal[0]
-x_t=butter_bandpass_filter(x_t,int(5000/2*np.pi),samplerate_list[0],3)
-x_t=np.array(x_t,dtype=np.int16)
-plt.plot(t[0],x_t)
-wavfile.write("example.wav",samplerate_list[0],x_t)
+
+plt.plot(t[0],x1)
 plt.show()
+
+plt.plot(t[0],x[1])
+plt.show()
+
+plt.plot(t[0], x2)
+plt.show()
+
+
+plt.plot(t[0], x[2])
+plt.show()
+
+plt.plot(t[0], x3)
+plt.show()
+
+
+
+wavfile.write("example.wav",samplerate_list[0],x1)
+wavfile.write("example2.wav",samplerate_list[1],x2)
+wavfile.write("example3.wav",samplerate_list[2],x3)
+
+
+
 
 
 
