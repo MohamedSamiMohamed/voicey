@@ -18,6 +18,7 @@ demodulating_signal=[]
 
 #the following two functions apply a low pass filter on the data which will be needed to cut the first signal which has
 #a carrier with omega= 5000 away from the other two signals which are modulated by QAM with a carrier of omega = 15000
+#and also will be needed after multiplying modulated signals with the incoming carrier
 #----------------------------------------------------------------------------------------------------------------------------------
 def butter_lowpass(lowcut, fs, order):
     nyq = 0.5 * fs
@@ -104,9 +105,9 @@ def demodulation(s_t,low_pass_freq,freqs,f,phase_shift):
     return x1,x2,x3
 
 #-----------------------------------------------------------------------------------------------------------------------------
-read_signal("input1.wav")
-read_signal("input2.wav")
-read_signal("input3.wav")
+read_signal("Team 13_speech signal_1.wav")
+read_signal("Team 13_speech signal_2.wav")
+read_signal("Team 13_speech signal_3.wav")
 min_shape=min(shape)
 s_t=modulation([5000,15000,15000],min_shape)
 plt.plot(t[0],s_t)
