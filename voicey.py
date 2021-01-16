@@ -3,7 +3,7 @@ from scipy.io import wavfile
 import matplotlib.pyplot as plt
 import wave
 from scipy import fftpack
-from scipy.signal import butter, lfilter
+from scipy.signal import butter, filtfilt
 from scipy.signal import freqz
 t=[]
 x=[]
@@ -13,7 +13,7 @@ freq_signals=[]
 modulated_signal=[]
 modulating_signal=[]
 demodulating_signal=[]
-def butter_bandpass(lowcut, fs, order):
+def butter_lowpass(lowcut, fs, order):
     nyq = 0.5 * fs
     low = lowcut / nyq
     b, a = butter(order, low, btype='low',analog=False)
@@ -21,9 +21,11 @@ def butter_bandpass(lowcut, fs, order):
 
 #-----------------------------------------------------------------------------------------------------------------------------------
 def butter_lowpass_filter(data, lowcut, fs, order=5):
-    b, a = butter_bandpass(lowcut, fs, order=order)
-    y = lfilter(b, a, data)
+    b, a = butter_lowpass(lowcut, fs, order=order)
+    y = filtfilt(b, a, data)
     return y
+
+
 def read_signal(path):
     samplerate, un_modulated=wavfile.read(path)
     un_modulated=np.array(un_modulated,dtype=np.int16)
@@ -58,13 +60,15 @@ def demodulation(s_t,freqs_first,freqs,f,phase_shift):
         freq_signals.append(fftpack.fft(modulated_signal[i]))
     freq_signals.append(fftpack.fft(s_t))
     s_t_freq=fftpack.fft(s_t)
+    # plt.plot(freq,s_t_freq)
+    # plt.show()
     plt.plot(freq, s_t_freq.real)
     plt.show()
     x1=butter_lowpass_filter(s_t,freqs_first,samplerate_list[0],12)
     x23=s_t-x1
-    demodulating_signal.append(np.cos( (2*np.pi)*(f[0])* t[0]) + phase_shift[0] )
-    demodulating_signal.append(np.cos( (2*np.pi)*(f[1])* t[0]) + phase_shift[1] )
-    demodulating_signal.append(np.sin( (2*np.pi)*(f[2])* t[0]) + phase_shift[2] )
+    demodulating_signal.append(np.cos( (2*np.pi)*(f[0])* t[0] + np.radians(phase_shift[0]) ) )
+    demodulating_signal.append(np.cos( (2*np.pi)*(f[1])* t[0] + np.radians(phase_shift[1]) ) )
+    demodulating_signal.append(np.sin( (2*np.pi)*(f[2])* t[0] + np.radians(phase_shift[2]) ) )
     x2=x23*demodulating_signal[1]
     x3=x23*demodulating_signal[2]
     x1=x1*demodulating_signal[0]
@@ -85,89 +89,21 @@ read_signal("output2.wav")
 read_signal("output3.wav")
 read_signal("output4.wav")
 min_shape=min(shape)
+# s_t=modulation([5000,15000,15000],min_shape)
+# x1,x2,x3=demodulation(s_t,9000,[4000,4000,4000],[5000,15000,15000],[0,0,0])
+
+
+# s_t=modulation([5000,15000,15000],min_shape)
+# x1,x2,x3=demodulation(s_t,9000,[4000,4000,4000],[5000,15000,15000],[10,10,10])
+
+
+# s_t=modulation([5000,15000,15000],min_shape)
+# x1,x2,x3=demodulation(s_t,9000,[4000,4000,4000],[5000,15000,15000],[30,30,30])
 
 
 s_t=modulation([5000,15000,15000],min_shape)
-x1,x2,x3=demodulation(s_t,7000,[5000,7000,7000],[5000,15000,15000],[0,0,0])
-# plt.plot(t[0],x[0])
-# plt.show()
+x1,x2,x3=demodulation(s_t,9000,[4000,4000,4000],[5000,15000,15000],[90,90,90])
 
-# plt.plot(t[0],x1)
-# plt.show()
-
-# plt.plot(t[0],x[1])
-# plt.show()
-
-# plt.plot(t[0], x2)
-# plt.show()
-
-# plt.plot(t[0], x[2])
-# plt.show()
-
-# plt.plot(t[0], x3)
-# plt.show()
-
-wavfile.write("example.wav",samplerate_list[0],x1)
-wavfile.write("example2.wav",samplerate_list[1],x2)
-wavfile.write("example3.wav",samplerate_list[2],x3)
-
-
-
-s_t=modulation([5000,15000,15000],min_shape)
-x1,x2,x3=demodulation(s_t,7000,[5000,7000,7000],[5000,15000,15000],[10,10,10])
-# plt.plot(t[0],x[0])
-# plt.show()
-
-# plt.plot(t[0],x1)
-# plt.show()
-
-# plt.plot(t[0],x[1])
-# plt.show()
-
-# plt.plot(t[0], x2)
-# plt.show()
-
-# plt.plot(t[0], x[2])
-# plt.show()
-
-# plt.plot(t[0], x3)
-# plt.show()
-
-wavfile.write("example10.wav",samplerate_list[0],x1)
-wavfile.write("example102.wav",samplerate_list[1],x2)
-wavfile.write("example103.wav",samplerate_list[2],x3)
-
-
-
-
-
-s_t=modulation([5000,15000,15000],min_shape)
-x1,x2,x3=demodulation(s_t,7000,[5000,7000,7000],[5000,15000,15000],[30,30,30])
-# plt.plot(t[0],x[0])
-# plt.show()
-
-# plt.plot(t[0],x1)
-# plt.show()
-
-# plt.plot(t[0],x[1])
-# plt.show()
-
-# plt.plot(t[0], x2)
-# plt.show()
-
-# plt.plot(t[0], x[2])
-# plt.show()
-
-# plt.plot(t[0], x3)
-# plt.show()
-
-wavfile.write("example30.wav",samplerate_list[0],x1)
-wavfile.write("example302.wav",samplerate_list[1],x2)
-wavfile.write("example303.wav",samplerate_list[2],x3)
-
-
-s_t=modulation([5000,15000,15000],min_shape)
-x1,x2,x3=demodulation(s_t,7000,[5000,7000,7000],[5000,15000,15000],[90,90,90])
 plt.plot(t[0],x[0])
 plt.show()
 
@@ -186,6 +122,6 @@ plt.show()
 plt.plot(t[0], x3)
 plt.show()
 
-wavfile.write("example90.wav",samplerate_list[0],x1)
-wavfile.write("example902.wav",samplerate_list[1],x2)
-wavfile.write("example903.wav",samplerate_list[2],x3)
+wavfile.write("outputSignal1.wav",samplerate_list[0],x1)
+wavfile.write("outputSignal2.wav",samplerate_list[1],x2)
+wavfile.write("outputSignal3.wav",samplerate_list[2],x3)
