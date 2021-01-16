@@ -5,6 +5,7 @@ import wave
 from scipy import fftpack
 from scipy.signal import butter, filtfilt
 from scipy.signal import freqz
+import math
 t=[]
 x=[]
 shape=[]
@@ -45,39 +46,49 @@ def modulation(f,min_shape):
     for i in range(0,3):
         x[i]=x[i][0:min_shape]
         t[i]=t[i][0:min_shape]
-    modulating_signal.append(np.cos( (2*np.pi)*(f[0])* t[0]) )
-    modulating_signal.append(np.cos( (2*np.pi)*(f[1])* t[0]) )
-    modulating_signal.append(np.sin( (2*np.pi)*(f[2])* t[0]) )
+    modulating_signal.append(np.cos((2*np.pi)*(f[0])* t[0]))
+    modulating_signal.append(np.cos((2*np.pi)*(f[1])* t[0]))
+    modulating_signal.append(np.sin((2*np.pi)*(f[2])* t[0]))
     for i in range(0,3):
         modulated_signal.append(np.multiply(x[i],modulating_signal[i]))
+    # freq = fftpack.fftfreq(min_shape) * samplerate_list[0]
+    # x1_freq=fftpack.fft(modulated_signal[0])
+    # plt.plot(freq, x1_freq.real)
+    # plt.show()
     s_t=modulated_signal[0]+modulated_signal[1]+modulated_signal[2]
+    # freq_signals.append(fftpack.fft(s_t))
+    # s_t_freq=fftpack.fft(s_t)
+    # plt.plot(freq, s_t_freq.real)
+    # plt.show()
     return s_t
 
 #-----------------------------------------------------------------------------------------------------------------------------------
 def demodulation(s_t,freqs_first,freqs,f,phase_shift):
-    freq = fftpack.fftfreq(min_shape) * samplerate_list[0]
     for i in range(0,3):
         freq_signals.append(fftpack.fft(modulated_signal[i]))
     freq_signals.append(fftpack.fft(s_t))
     s_t_freq=fftpack.fft(s_t)
     # plt.plot(freq,s_t_freq)
     # plt.show()
-    plt.plot(freq, s_t_freq.real)
-    plt.show()
+    # plt.plot(freq, s_t_freq.real)
+    # plt.show()
     x1=butter_lowpass_filter(s_t,freqs_first,samplerate_list[0],12)
+    # x1_freq_de=fftpack.fft(x1)
+    # plt.plot(freq, x1_freq_de.real)
+    # plt.show()
     x23=s_t-x1
     demodulating_signal.append(np.cos( (2*np.pi)*(f[0])* t[0] + np.radians(phase_shift[0]) ) )
     demodulating_signal.append(np.cos( (2*np.pi)*(f[1])* t[0] + np.radians(phase_shift[1]) ) )
     demodulating_signal.append(np.sin( (2*np.pi)*(f[2])* t[0] + np.radians(phase_shift[2]) ) )
+    x1=x1*demodulating_signal[0]
     x2=x23*demodulating_signal[1]
     x3=x23*demodulating_signal[2]
-    x1=x1*demodulating_signal[0]
+    x1=butter_lowpass_filter(x1,freqs[0],samplerate_list[0],12)
     x2=butter_lowpass_filter(x2,freqs[1],samplerate_list[0],12)
     x3=butter_lowpass_filter(x3,freqs[2],samplerate_list[0],12)
-    x1=butter_lowpass_filter(x1,freqs[0],samplerate_list[0],12)
+    x1=2*x1
     x2=2*x2
     x3=2*x3
-    x1=2*x1
 
     x1=np.array(x1,dtype=np.int16)
     x2=np.array(x2,dtype=np.int16)
@@ -85,9 +96,9 @@ def demodulation(s_t,freqs_first,freqs,f,phase_shift):
     return x1,x2,x3
 
 #-----------------------------------------------------------------------------------------------------------------------------
-read_signal("output2.wav")
-read_signal("output3.wav")
-read_signal("output4.wav")
+read_signal("input1.wav")
+read_signal("input2.wav")
+read_signal("input3.wav")
 min_shape=min(shape)
 # s_t=modulation([5000,15000,15000],min_shape)
 # x1,x2,x3=demodulation(s_t,9000,[4000,4000,4000],[5000,15000,15000],[0,0,0])

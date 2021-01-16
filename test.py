@@ -63,7 +63,7 @@ def read_signal(path):
 # plt.legend(loc='best')
 # plt.show()
 
-# a = 0.02
+# # a = 0.02
 # f0 = 600.0
 # x = 0.1 * np.sin(2 * np.pi * 1.2 * np.sqrt(t))
 # x += 0.01 * np.cos(2 * np.pi * 312 * t + 0.1)
