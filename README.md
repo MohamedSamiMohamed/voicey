@@ -8,4 +8,25 @@ to simulate sending and receiving signals through channels.
 Frequency domain |  Time domain
 :-------------------------:|:-------------------------:
 ![magnitude spectrum for input signals summation](plots/music_signal_spectrum.png) | ![input signals summation in time domain](plots/music_signal_time.png)
+
+### Original and demodulated signals
+0 degree phase shift:
+original signal |  demodulated signal
+:-------------------------:|:-------------------------:
+![magnitude spectrum for input signals summation](plots/music_signal_spectrum.png) | ![input signals summation in time domain](plots/music_signal_time.png)
+![magnitude spectrum for input signals summation](plots/music_signal_spectrum.png) | ![input signals summation in time domain](plots/music_signal_time.png)
+![magnitude spectrum for input signals summation](plots/music_signal_spectrum.png) | ![input signals summation in time domain](plots/music_signal_time.png)
+
+30 degree phase shift:
+original signal |  demodulated signal
+:-------------------------:|:-------------------------:
+![magnitude spectrum for input signals summation](plots/music_signal_spectrum.png) | ![input signals summation in time domain](plots/music_signal_time.png)
+![magnitude spectrum for input signals summation](plots/music_signal_spectrum.png) | ![input signals summation in time domain](plots/music_signal_time.png)
+![magnitude spectrum for input signals summation](plots/music_signal_spectrum.png) | ![input signals summation in time domain](plots/music_signal_time.png)
+
+90 degree phase shift:
+original signal |  demodulated signal
+:-------------------------:|:-------------------------:
+![magnitude spectrum for input signals summation](plots/music_signal_spectrum.png) | ![input signals summation in time domain](plots/music_signal_time.png)
+![magnitude spectrum for input signals summation](plots/music_signal_spectrum.png) | ![input signals summation in time domain](plots/music_signal_time.png)
 ![magnitude spectrum for input signals summation](plots/music_signal_spectrum.png) | ![input signals summation in time domain](plots/music_signal_time.png)
