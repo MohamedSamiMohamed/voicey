@@ -105,9 +105,9 @@ def demodulation(s_t,low_pass_freq,freqs,f,phase_shift):
     return x1,x2,x3
 
 #-----------------------------------------------------------------------------------------------------------------------------
-read_signal("Team 13_speech signal_1.wav")
-read_signal("Team 13_speech signal_2.wav")
-read_signal("Team 13_speech signal_3.wav")
+read_signal("./input/speech_signal_1.wav")
+read_signal("./input/speech_signal_2.wav")
+read_signal("./input/speech_signal_3.wav")
 min_shape=min(shape)
 s_t=modulation([5000,15000,15000],min_shape)
 plt.plot(t[0],s_t)
@@ -155,6 +155,6 @@ plt.plot(t[0], x3)
 plt.title('demodulated signal 3')
 plt.show()
 
-wavfile.write("outputSignal1.wav",samplerate_list[0],x1)
-wavfile.write("outputSignal2.wav",samplerate_list[1],x2)
-wavfile.write("outputSignal3.wav",samplerate_list[2],x3)
+wavfile.write("./output/outputSignal1.wav",samplerate_list[0],x1)
+wavfile.write("./output/outputSignal2.wav",samplerate_list[1],x2)
+wavfile.write("./output/outputSignal3.wav",samplerate_list[2],x3)
