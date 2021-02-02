@@ -3,7 +3,7 @@ Voicey is a project for modulating and demodulating three audio signals by the f
 ```bash
 s(t) = x1(t)cos(ω1*t)+ x2(t)cos(ω2*t)+ x3(t)sin(ω2*t)
 ```
-to simulate sending and receiving signals through channels.
+to simulate sending and receiving signals through channels.<\ br>
 QAM and DBSC techniques are used to solve this problem.
 ## Signals plots in frquency and time domains
 Frequency domain |  Time domain
@@ -17,6 +17,8 @@ original signal |  demodulated signal
 ![](plots/original1.png) | ![](plots/demodulated1.png)
 ![](plots/original2.png) | ![](plots/demodulated2.png)
 ![](plots/original3.png) | ![](plots/demodulated3.png)
+
+
 30 degree phase shift:
 original signal |  demodulated signal
 :-------------------------:|:-------------------------:
